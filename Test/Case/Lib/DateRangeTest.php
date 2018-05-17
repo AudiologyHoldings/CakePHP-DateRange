@@ -1,6 +1,6 @@
 <?php
 /* Unit Test for DateRange */
-App::uses('DateRange', 'Lib');
+App::import('DateRange.Lib', 'DateRange');
 App::uses('AppTestCase','Lib');
 
 /**
@@ -45,7 +45,7 @@ class DateRangeTest extends AppTestCase {
 		$return = $o->setStart('2015-01-01 11:11:11');
 		$this->assertTrue(is_object($return));
 
-		$this->assertEqual(
+		$this->assertEquals(
 			$o->getStart(),
 			new DateTime('2015-01-01 11:11:11')
 		);
@@ -55,7 +55,7 @@ class DateRangeTest extends AppTestCase {
 
 		$expect = new DateTime('today');
 		$expect->setTime(00, 00, 00);
-		$this->assertEqual(
+		$this->assertEquals(
 			$o->getStart(),
 			$expect
 		);
@@ -68,7 +68,7 @@ class DateRangeTest extends AppTestCase {
 		$return = $o->setEnd('2015-01-01 11:11:11');
 		$this->assertTrue(is_object($return));
 
-		$this->assertEqual(
+		$this->assertEquals(
 			$o->getEnd(),
 			new DateTime('2015-01-01 11:11:11')
 		);
@@ -78,7 +78,7 @@ class DateRangeTest extends AppTestCase {
 
 		$expect = new DateTime('today');
 		$expect->setTime(23, 59, 59);
-		$this->assertEqual(
+		$this->assertEquals(
 			$o->getEnd(),
 			$expect
 		);
@@ -86,15 +86,15 @@ class DateRangeTest extends AppTestCase {
 
 	public function testSetTimezone() {
 		$o = new DateRangeMock();
-		$this->assertEqual(
+		$this->assertEquals(
 			$o->setTimezone('America/New_York')->buildDate('2015-01-01 11:11:11')->format('Y-m-d H:i:sP'),
 			'2015-01-01 11:11:11-05:00'
 		);
-		$this->assertEqual(
+		$this->assertEquals(
 			$o->setTimezone('Pacific/Chatham')->buildDate('2015-01-01 11:11:11')->format('Y-m-d H:i:sP'),
 			'2015-01-01 11:11:11+13:45'
 		);
-		$this->assertEqual(
+		$this->assertEquals(
 			$o->setTimezone('Pacific/Nauru')->buildDate('2015-01-01 11:11:11')->format('Y-m-d H:i:sP'),
 			'2015-01-01 11:11:11+12:00'
 		);
@@ -104,7 +104,7 @@ class DateRangeTest extends AppTestCase {
 		$o->setTimezone('America/New_York');
 		$o->setStart('2015-01-01 11:11:11');
 		$o->setTimezone('Pacific/Nauru');
-		$this->assertEqual(
+		$this->assertEquals(
 			$o->getStart()->format('Y-m-d H:i:sP'),
 			'2015-01-01 11:11:11-05:00'  // still in New_York
 		);
@@ -114,53 +114,53 @@ class DateRangeTest extends AppTestCase {
 	public function testBuildDate() {
 		$o = new DateRangeMock();
 		// now includes a time
-		$this->assertEqual(
+		$this->assertEquals(
 			$o->buildDate('now'),
 			new DateTime(date('Y-m-d H:i:s'))
 		);
 		// today does not (which means it can be assigned default times)
-		$this->assertEqual(
+		$this->assertEquals(
 			$o->buildDate('today'),
 			new DateTime(date('Y-m-d') . ' 00:00:00')
 		);
 		// basic epoch input tests
-		$this->assertEqual(
+		$this->assertEquals(
 			$o->buildDate(strtotime('2014-01-01 00:00:00')),
 			new DateTime('2014-01-01 00:00:00')
 		);
 		// basic date input tests
-		$this->assertEqual(
+		$this->assertEquals(
 			$o->buildDate('2014-01-01 00:00:00'),
 			new DateTime('2014-01-01 00:00:00')
 		);
-		$this->assertEqual(
+		$this->assertEquals(
 			$o->buildDate('2014-01-01'),
 			new DateTime('2014-01-01 00:00:00')
 		);
-		$this->assertEqual(
+		$this->assertEquals(
 			$o->buildDate('2014-01-01', '00:00:00'),
 			new DateTime('2014-01-01 00:00:00')
 		);
 		// setting a default time (ignored because time was passed in)
-		$this->assertEqual(
+		$this->assertEquals(
 			$o->buildDate('2014-01-01 01:00:00', '23:59:59'),
 			new DateTime('2014-01-01 01:00:00')
 		);
 		// setting a default time (assigned because no time was passed in)
-		$this->assertEqual(
+		$this->assertEquals(
 			$o->buildDate('2014-01-01', '23:59:59'),
 			new DateTime('2014-01-01 23:59:59')
 		);
 		// setting a default time (assigned because time passed in was 00:00:00)
 		//   GOTCHA!
-		$this->assertEqual(
+		$this->assertEquals(
 			$o->buildDate('2014-01-01 00:00:00', '23:59:59'),
 			new DateTime('2014-01-01 23:59:59')
 		);
 
 		// setTimezone() first - inherits
 		$o->setTimezone('Pacific/Chatham');
-		$this->assertEqual(
+		$this->assertEquals(
 			$o->buildDate('2015-01-01 11:11:11')->format('Y-m-d H:i:sP'),
 			'2015-01-01 11:11:11+13:45'
 		);
@@ -168,11 +168,11 @@ class DateRangeTest extends AppTestCase {
 
 	public function testAdjustTimezone() {
 		$o = new DateRange('2014-01-01', '2014-01-31', 'America/New_York');
-		$this->assertEqual(
+		$this->assertEquals(
 			$o->getStart()->format('Y-m-d H:i:sP'),
 			'2014-01-01 00:00:00-05:00'
 		);
-		$this->assertEqual(
+		$this->assertEquals(
 			$o->getEnd()->format('Y-m-d H:i:sP'),
 			'2014-01-31 23:59:59-05:00'
 		);
@@ -180,11 +180,11 @@ class DateRangeTest extends AppTestCase {
 		// moving from -5 --> +13:45 (+18:45)
 		$o->adjustTimezone('Pacific/Chatham');
 
-		$this->assertEqual(
+		$this->assertEquals(
 			$o->getStart()->format('Y-m-d H:i:sP'),
 			'2014-01-01 18:45:00+13:45'
 		);
-		$this->assertEqual(
+		$this->assertEquals(
 			$o->getEnd()->format('Y-m-d H:i:sP'),
 			'2014-02-01 18:44:59+13:45'
 		);
@@ -192,22 +192,22 @@ class DateRangeTest extends AppTestCase {
 
 	public function testAdjustTimesLitle() {
 		$o = new DateRange('2014-01-01', '2014-01-31');
-		$this->assertEqual(
+		$this->assertEquals(
 			$o->getStart()->format('Y-m-d H:i:s'),
 			'2014-01-01 00:00:00'
 		);
-		$this->assertEqual(
+		$this->assertEquals(
 			$o->getEnd()->format('Y-m-d H:i:s'),
 			'2014-01-31 23:59:59'
 		);
 
 		$o->adjustTimes('litle');
 
-		$this->assertEqual(
+		$this->assertEquals(
 			$o->getStart()->format('Y-m-d H:i:s'),
 			'2013-12-31 21:00:00'
 		);
-		$this->assertEqual(
+		$this->assertEquals(
 			$o->getEnd()->format('Y-m-d H:i:s'),
 			'2014-01-31 20:59:59'
 		);
@@ -215,22 +215,22 @@ class DateRangeTest extends AppTestCase {
 		// do it over leap day
 		$o = new DateRange('2016-02-29', '2016-03-01');
 		$o->adjustTimes('litle');
-		$this->assertEqual(
+		$this->assertEquals(
 			$o->getStart()->format('Y-m-d H:i:s'),
 			'2016-02-28 21:00:00'
 		);
-		$this->assertEqual(
+		$this->assertEquals(
 			$o->getEnd()->format('Y-m-d H:i:s'),
 			'2016-03-01 20:59:59'
 		);
 
 		$o = new DateRange('2016-02-28 11:11:11', '2016-02-29 23:59:59');
 		$o->adjustTimes('litle');
-		$this->assertEqual(
+		$this->assertEquals(
 			$o->getStart()->format('Y-m-d H:i:s'),
 			'2016-02-27 21:00:00'
 		);
-		$this->assertEqual(
+		$this->assertEquals(
 			$o->getEnd()->format('Y-m-d H:i:s'),
 			'2016-02-29 20:59:59'
 		);
@@ -240,11 +240,11 @@ class DateRangeTest extends AppTestCase {
 	public function testAdjustTimesMidnight() {
 		$o = new DateRange('2014-01-01 11:11:11', '2014-01-31 07:08:09');
 		$o->adjustTimes();
-		$this->assertEqual(
+		$this->assertEquals(
 			$o->getStart()->format('Y-m-d H:i:s'),
 			'2014-01-01 00:00:00'
 		);
-		$this->assertEqual(
+		$this->assertEquals(
 			$o->getEnd()->format('Y-m-d H:i:s'),
 			'2014-01-31 23:59:59'
 		);
@@ -347,21 +347,21 @@ class DateRangeTest extends AppTestCase {
 		);
 
 		$this->assertTrue(
-			DateRange::in()
+			DateRange::in('2014-01-01')
 				->setTimezone('America/New_York')
 				->setStart('2014-01-01')
 				->setEnd('2014-01-31')
 				->contains('2014-01-01')
 		);
 		$this->assertFalse(
-			DateRange::in()
+            DateRange::in('2014-01-01')
 				->setTimezone('America/New_York')
 				->setStart('2014-01-01')
 				->setEnd('2014-01-31')
 				->contains('2014-02-01')
 		);
 		$this->assertFalse(
-			DateRange::in()
+            DateRange::in('2014-01-01')
 				->setTimezone('America/New_York')
 				->setStart('2014-01-01')
 				->setEnd('2014-01-31')
