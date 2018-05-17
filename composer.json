@@ -1,5 +1,5 @@
 {
-  "name": "zeroasterisk/cakephp-daterange",
+  "name": "audiologyholdings/cakephp-daterange",
   "description": "Lib and Behavior to manage datetime range",
   "type": "cakephp-plugin",
   "keywords": [
@@ -8,7 +8,7 @@
     "cakephp",
     "plugin"
   ],
-  "homepage": "https://github.com/zeroasterisk/CakePHP-DateRange",
+  "homepage": "https://github.com/AudiologyHoldings/CakePHP-DateRange",
   "license": "MIT",
   "authors": [
     {
@@ -23,8 +23,8 @@
   },
   "support": {
     "email": "zeroasterisk@gmail.com",
-    "issues": "https://github.com/zeroasterisk/CakePHP-DateRange/issues",
-    "source": "https://github.com/zeroasterisk/CakePHP-DateRange"
+    "issues": "https://github.com/AudiologyHoldings/CakePHP-DateRange/issues",
+    "source": "https://github.com/AudiologyHoldings/CakePHP-DateRange"
   },
   "extra": {
     "installer-name": "DateRange"
