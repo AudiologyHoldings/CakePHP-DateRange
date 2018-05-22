@@ -190,53 +190,6 @@ class DateRangeTest extends AppTestCase {
 		);
 	}
 
-	public function testAdjustTimesLitle() {
-		$o = new DateRange('2014-01-01', '2014-01-31');
-		$this->assertEquals(
-			$o->getStart()->format('Y-m-d H:i:s'),
-			'2014-01-01 00:00:00'
-		);
-		$this->assertEquals(
-			$o->getEnd()->format('Y-m-d H:i:s'),
-			'2014-01-31 23:59:59'
-		);
-
-		$o->adjustTimes('litle');
-
-		$this->assertEquals(
-			$o->getStart()->format('Y-m-d H:i:s'),
-			'2013-12-31 21:00:00'
-		);
-		$this->assertEquals(
-			$o->getEnd()->format('Y-m-d H:i:s'),
-			'2014-01-31 20:59:59'
-		);
-
-		// do it over leap day
-		$o = new DateRange('2016-02-29', '2016-03-01');
-		$o->adjustTimes('litle');
-		$this->assertEquals(
-			$o->getStart()->format('Y-m-d H:i:s'),
-			'2016-02-28 21:00:00'
-		);
-		$this->assertEquals(
-			$o->getEnd()->format('Y-m-d H:i:s'),
-			'2016-03-01 20:59:59'
-		);
-
-		$o = new DateRange('2016-02-28 11:11:11', '2016-02-29 23:59:59');
-		$o->adjustTimes('litle');
-		$this->assertEquals(
-			$o->getStart()->format('Y-m-d H:i:s'),
-			'2016-02-27 21:00:00'
-		);
-		$this->assertEquals(
-			$o->getEnd()->format('Y-m-d H:i:s'),
-			'2016-02-29 20:59:59'
-		);
-
-	}
-
 	public function testAdjustTimesMidnight() {
 		$o = new DateRange('2014-01-01 11:11:11', '2014-01-31 07:08:09');
 		$o->adjustTimes();

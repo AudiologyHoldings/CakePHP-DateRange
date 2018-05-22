@@ -23,14 +23,14 @@ add `app/Config/bootstrap.php`
     DateRange::in('2014-01-01', '2014-01-31')
       ->setTimezone('America/New_York')
       ->setTimezone('America/New_York')
-      ->adjustTimes('litle')
+      ->adjustTimes('midnight')
       ->contains('2014-01-01') === TRUE
 
     DateRange::in()
       ->setTimezone('America/New_York')
       ->setStart('2014-01-01')
       ->setEnd('2014-01-31')
-      ->adjustTimes('litle')
+      ->adjustTimes('midnight')
       ->contains('2013-12-31')
 
 ### Usage as a Class -> Object:

@@ -12,14 +12,14 @@
  *   DateRange::in('2014-01-01', '2014-01-31')
  *     ->setTimezone('America/New_York')
  *     ->setTimezone('America/New_York')
- *     ->adjustTimes('litle')
+ *     ->adjustTimes('midnight')
  *     ->contains('2014-01-01') === TRUE
  *
  *   DateRange::in()
  *     ->setTimezone('America/New_York')
  *     ->setStart('2014-01-01')
  *     ->setEnd('2014-01-31')
- *     ->adjustTimes('litle')
+ *     ->adjustTimes('midnight')
  *     ->contains('2013-12-31')
  *
  * Usage as a Class -> Object:
@@ -132,7 +132,6 @@ class DateRange {
 	 * you can adjust them here
 	 *
 	 *   - how = 'midnight' (default) start at 00:00:00 and end at 23:59:59
-	 *   - how = 'litle' start at 21:00:00 (-1 day) and end at 20:59:59 (today)
 	 *
 	 * @param string $how
 	 *
@@ -148,7 +147,6 @@ class DateRange {
 	 * you can adjust them here
 	 *
 	 *   - how = 'midnight' (default) start at 00:00:00 and end at 23:59:59
-	 *   - how = 'litle' start at 21:00:00 (-1 day) and end at 20:59:59 (today)
 	 *
 	 * @param string $how
 	 *
@@ -164,7 +162,6 @@ class DateRange {
 	 * you can adjust them here
 	 *
 	 *   - how = 'midnight' (default) start at 00:00:00 and end at 23:59:59
-	 *   - how = 'litle' start at 21:00:00 (-1 day) and end at 20:59:59 (today)
 	 *
 	 * @param DateTimeZone|string $timezone
 	 *
@@ -207,27 +204,12 @@ class DateRange {
 	 * you can adjust them here
 	 *
 	 *   - how = 'midnight' (default) start at 00:00:00 and end at 23:59:59
-	 *   - how = 'litle' start at 21:00:00 (-1 day) and end at 20:59:59 (today)
 	 *
 	 * @param string $how
 	 *
 	 * @return DateRange $this (chainable)
 	 */
 	public function adjustTimes($how = null) {
-		if ($how == 'litle') {
-			$start = $this->getStart();
-			if (!empty($start)) {
-				$start->sub(new DateInterval('P1D'));
-				$start->setTime(21, 00, 00);
-				$this->setStart($start);
-			}
-			$end = $this->getEnd();
-			if (!empty($end)) {
-				$end->setTime(20, 59, 59);
-				$this->setEnd($end);
-			}
-			return $this;
-		}
 		// default to 'midnight'
 		$start = $this->getStart();
 		if (!empty($start)) {
