@@ -114,10 +114,12 @@ class DateRangeTest extends AppTestCase {
 	public function testBuildDate() {
 		$o = new DateRangeMock();
 		// now includes a time
-		$this->assertEquals(
-			$o->buildDate('now'),
-			new DateTime(date('Y-m-d H:i:s'))
-		);
+        $expected = $o->buildDate('now')->format('Y-m-d H:i:s');
+        $actual = new DateTime(date('Y-m-d H:i:s'));
+        $this->assertEquals(
+            $expected,
+            $actual->format('Y-m-d H:i:s')
+        );
 		// today does not (which means it can be assigned default times)
 		$this->assertEquals(
 			$o->buildDate('today'),
